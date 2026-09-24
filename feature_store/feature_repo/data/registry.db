@@ -1,0 +1,87 @@
+
+B
+$
+__dummy"
+__dummy_idJfeature_store
+è¶¥Õ˜¢ú&è¶¥Õ˜¢ú&
+j
+L
+customer$Customer entity for churn prediction"customer_idJfeature_store
+è¶¥Õğ®ˆ'è¶¥Õğ®ˆ'1"$61392e33-1dda-43a1-925d-6d1469fd3496*ÆÖ¨Õø¬÷É2ù
+½
+customer_featuresfeature_storecustomer"
+age"
+tenure_months"
+monthly_charges"
+total_charges"
+support_calls"
+num_products" 
+contract_type_Month-to-month"
+contract_type_One year"
+contract_type_Two year"
+internet_service_DSL" 
+internet_service_Fiber optic"
+internet_service_No" 
+payment_method_Bank transfer"
+payment_method_Credit card"#
+payment_method_Electronic check"
+payment_method_Mailed check*
+projectcustomer_churn*
+teammlops2€ç„:¡event_timestampZ data/customer_features.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢customer_features_source’ƒÖ¨Õ€¼üM"ƒÖ¨Õ€¼üM@b
+customer_id’latest7
+è¶¥ÕÀˆš'ÆÖ¨Õ¨à·É
+Åï£Æ¸ˆùú–ñ©Õ 0R
+š
+,feast.infra.online_stores.sqlite.SqliteTable"j
+GE:\mlops-customer-churn\feature_store\feature_repo\data\online_store.dbfeature_store_customer_featuresb±event_timestampZ data/customer_features.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢customer_features_sourceªfeature_store’è¶¥ÕèĞÿ"è¶¥Õ ‘ã&Š-
+
+feature_store
+è¶¥Õèññè¶¥Õèññ’Š
+¾
+customer_featuresfeature_store"feature_view*Ø
+¹
+customer_featuresfeature_storecustomer"
+age"
+tenure_months"
+monthly_charges"
+total_charges"
+support_calls"
+num_products" 
+contract_type_month_to_month"
+contract_type_one_year"
+contract_type_two_year"
+internet_service_dsl"
+internet_service_fiber"
+internet_service_none" 
+payment_method_bank_transfer"
+payment_method_credit_card"#
+payment_method_electronic_check"
+payment_method_mailed_check*
+projectcustomer_churn*
+teammlops2€ç„:¡event_timestampZ data/customer_features.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢customer_features_source’è¶¥ÕèĞÿ"è¶¥Õ ‘ã&@b
+customer_id’latest
+è¶¥ÕÀˆš'è¶¥ÕÀˆš'2è¶¥ÕÀÆ'B$3b52eb39-a42b-427c-9a68-09d4680fe67a
+Æ
+customer_featuresfeature_store"feature_view*Ş
+½
+customer_featuresfeature_storecustomer"
+age"
+tenure_months"
+monthly_charges"
+total_charges"
+support_calls"
+num_products" 
+contract_type_Month-to-month"
+contract_type_One year"
+contract_type_Two year"
+internet_service_DSL" 
+internet_service_Fiber optic"
+internet_service_No" 
+payment_method_Bank transfer"
+payment_method_Credit card"#
+payment_method_Electronic check"
+payment_method_Mailed check*
+projectcustomer_churn*
+teammlops2€ç„:¡event_timestampZ data/customer_features.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢customer_features_source’ƒÖ¨Õ€¼üM"ƒÖ¨Õ€¼üM@b
+customer_id’latest
+è¶¥ÕÀˆš'ƒÖ¨Õˆà¸d 2ƒÖ¨Õ€²áeB$c5772536-f87c-4db7-9b57-1a9735e30a7c
