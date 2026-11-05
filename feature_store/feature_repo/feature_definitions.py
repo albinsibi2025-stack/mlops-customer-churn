@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from feast import Entity, FeatureView, Field, FileSource
+from feast import Entity, FeatureView, FeatureService, Field, FileSource
 from feast.types import Float32, Int64
 
 
@@ -21,7 +21,7 @@ customer = Entity(
 
 customer_features_source = FileSource(
     name="customer_features_source",
-    path="data/customer_features.parquet",
+    path="data/customer_features_v3.parquet",
     timestamp_field="event_timestamp",
 )
 
@@ -68,4 +68,12 @@ customer_features = FeatureView(
         "project": "customer_churn",
         "team": "mlops",
     },
+)
+# ============================================================
+# Customer Churn Feature Service
+# ============================================================
+
+customer_churn_service = FeatureService(
+    name="customer_churn_service",
+    features=[customer_features],
 )

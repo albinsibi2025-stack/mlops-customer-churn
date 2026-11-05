@@ -1,0 +1,6 @@
+outs:
+- md5: 21a07d1e35ced46dccd658b0126abcaf.dir
+  size: 235773
+  nfiles: 3
+  hash: md5
+  path: features_v3

@@ -1,0 +1,5 @@
+outs:
+- md5: cfd82dfc29b739a8a12e642bbd54b4f6
+  size: 93435
+  hash: md5
+  path: customer_features_v3.parquet

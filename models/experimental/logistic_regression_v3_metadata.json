@@ -1,0 +1,30 @@
+{
+    "model_name": "customer-churn-logistic-regression-v3",
+    "model_type": "Logistic Regression",
+    "version": 3,
+    "threshold": 0.34,
+    "selection_metric": "validation_f1",
+    "validation_f1": 0.5657,
+    "validation_precision": 0.527,
+    "validation_recall": 0.6106,
+    "feature_columns": [
+        "age",
+        "tenure_months",
+        "monthly_charges",
+        "total_charges",
+        "support_calls",
+        "num_products",
+        "contract_type_Month-to-month",
+        "contract_type_One year",
+        "contract_type_Two year",
+        "internet_service_DSL",
+        "internet_service_Fiber optic",
+        "internet_service_No",
+        "payment_method_Bank transfer",
+        "payment_method_Credit card",
+        "payment_method_Electronic check",
+        "payment_method_Mailed check"
+    ],
+    "target_column": "churn",
+    "dataset": "synthetic customer churn V3"
+}

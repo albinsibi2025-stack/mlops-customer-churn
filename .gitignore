@@ -7,6 +7,7 @@
 # Python cache
 __pycache__/
 *.pyc
+.pytest_cache/
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
@@ -14,3 +15,17 @@ __pycache__/
 # IDE files
 .vscode/
 .idea/
+
+# MLflow generated files
+mlflow.db
+mlruns/
+
+# Monitoring logs and generated reports
+logs/
+reports/
+
+# Feast runtime databases
+feature_store/feature_repo/data/*.db
+
+# Generated monitoring datasets
+data/monitoring/
