@@ -10,33 +10,43 @@ from pydantic import BaseModel
 from src.monitoring.prediction_logger import log_prediction
 import time
 from src.monitoring.api_logger import log_api_request
+
 # --------------------------------------------------
 # PROJECT PATHS
 # --------------------------------------------------
 
 ROOT = Path(__file__).resolve().parents[2]
 
-MODEL_PATH = ROOT / "models/experimental/logistic_regression_v3.joblib"
-METADATA_PATH = ROOT / "models/experimental/logistic_regression_v3_metadata.json"
+METADATA_PATH = ROOT / "models/experimental/candidate_v3_metadata.json"
 TRAIN_PATH = ROOT / "data/experimental/features_v3/train.csv"
 
 FEAST_REPO_PATH = ROOT / "feature_store/feature_repo"
 
+# MLflow registered candidate artifact
+MODEL_NAME = "customer-churn-logistic-regression-v3-candidate"
+MODEL_VERSION = "1"
+MODEL_ARTIFACT_PATH = ROOT / "models/experimental/mlflow_candidate"
+
 # --------------------------------------------------
-# LOAD MODEL
+# LOAD REGISTERED MODEL ARTIFACT
 # --------------------------------------------------
 
-model = joblib.load(MODEL_PATH)
+import mlflow.sklearn
+
+model = mlflow.sklearn.load_model(str(MODEL_ARTIFACT_PATH))
 
 with open(METADATA_PATH, "r") as f:
     metadata = json.load(f)
 
 threshold = float(metadata["threshold"])
+feature_columns = metadata["feature_columns"]
 
-feature_columns = [
-    col for col in pd.read_csv(TRAIN_PATH, nrows=1).columns
-    if col != "churn"
-]
+print("MLflow registered model loaded successfully")
+print("Model:", MODEL_NAME)
+print("Model version:", MODEL_VERSION)
+print("Threshold:", threshold)
+print("Number of features:", len(feature_columns))
+
 
 # --------------------------------------------------
 # INITIALIZE FEAST
@@ -141,7 +151,6 @@ def generate_prediction(supplied):
         )
 
 
-# --------------------------------------------------
 # HOME
 # --------------------------------------------------
 
@@ -149,12 +158,11 @@ def generate_prediction(supplied):
 def home():
     return {
         "message": "Customer Churn Prediction API is running",
-        "model": MODEL_PATH.name,
+        "model": MODEL_NAME,
+	"model_version": MODEL_VERSION,
         "feature_store": "Feast"
     }
 
-
-# --------------------------------------------------
 # HEALTH CHECK
 # --------------------------------------------------
 
@@ -162,10 +170,13 @@ def home():
 def health():
     return {
         "status": "healthy",
-        "model": MODEL_PATH.name,
+        "model": MODEL_NAME,
+	"model_version": MODEL_VERSION,
         "threshold": threshold,
+        "number_of_features": len(feature_columns),
         "feature_service": customer_service.name
     }
+
 
 
 # --------------------------------------------------

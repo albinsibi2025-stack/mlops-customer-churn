@@ -1,0 +1,35 @@
+{
+    "model_name": "Logistic Regression",
+    "model_version": "v3-candidate",
+    "threshold": 0.34,
+    "selection_metric": "validation_f1",
+    "validation_metrics": {
+        "accuracy": 0.74,
+        "precision": 0.5269709543568465,
+        "recall": 0.6105769230769231,
+        "f1": 0.5657015590200446,
+        "roc_auc": 0.7756705932443939
+    },
+    "feature_columns": [
+        "age",
+        "tenure_months",
+        "monthly_charges",
+        "total_charges",
+        "support_calls",
+        "num_products",
+        "contract_type_Month-to-month",
+        "contract_type_One year",
+        "contract_type_Two year",
+        "internet_service_DSL",
+        "internet_service_Fiber optic",
+        "internet_service_No",
+        "payment_method_Bank transfer",
+        "payment_method_Credit card",
+        "payment_method_Electronic check",
+        "payment_method_Mailed check"
+    ],
+    "number_of_features": 16,
+    "target_column": "churn",
+    "dataset": "synthetic customer churn V3",
+    "note": "Candidate selected using validation data. Test data has not been used for model selection."
+}

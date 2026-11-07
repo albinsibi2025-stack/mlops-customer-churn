@@ -1,0 +1,47 @@
+artifact_path: file:E:/mlops-customer-churn/mlruns/2/models/m-76f1dda1556046ecb2c025e964ed0fec/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.skops
+    predict_fn: predict
+    python_version: 3.13.3
+  sklearn:
+    code: null
+    pickled_model: model.skops
+    serialization_format: skops
+    sklearn_version: 1.9.1
+    skops_trusted_types:
+    - numpy.dtype
+is_signature_from_type_hint: false
+mlflow_version: 3.16.0
+model_id: m-76f1dda1556046ecb2c025e964ed0fec
+model_size_bytes: 42916
+model_uuid: m-76f1dda1556046ecb2c025e964ed0fec
+prompts: null
+run_id: 935a62c0fd40448ca3b73dd2573d715d
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "long", "name": "age", "required": true}, {"type": "long", "name":
+    "tenure_months", "required": true}, {"type": "double", "name": "monthly_charges",
+    "required": true}, {"type": "double", "name": "total_charges", "required": true},
+    {"type": "long", "name": "support_calls", "required": true}, {"type": "long",
+    "name": "num_products", "required": true}, {"type": "long", "name": "contract_type_Month-to-month",
+    "required": true}, {"type": "long", "name": "contract_type_One year", "required":
+    true}, {"type": "long", "name": "contract_type_Two year", "required": true}, {"type":
+    "long", "name": "internet_service_DSL", "required": true}, {"type": "long", "name":
+    "internet_service_Fiber optic", "required": true}, {"type": "long", "name": "internet_service_No",
+    "required": true}, {"type": "long", "name": "payment_method_Bank transfer", "required":
+    true}, {"type": "long", "name": "payment_method_Credit card", "required": true},
+    {"type": "long", "name": "payment_method_Electronic check", "required": true},
+    {"type": "long", "name": "payment_method_Mailed check", "required": true}]'
+  outputs: '[{"type": "double", "name": "churn_probability", "required": true}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-11-07 10:40:29.706935'

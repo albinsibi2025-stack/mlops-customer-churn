@@ -34,8 +34,8 @@ def log_prediction(
     record = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "customer_id": customer_id,
-        "model_name": "logistic_regression_v3",
-        "model_version": "1",
+        "model_name": "customer-churn-logistic-regression-v3-candidate",
+	"model_version": "1",
         "churn_probability": prediction["churn_probability"],
         "churn_prediction": prediction["churn_prediction"],
         "threshold": prediction["threshold"],

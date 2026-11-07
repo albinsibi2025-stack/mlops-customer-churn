@@ -1,0 +1,35 @@
+# Git
+.git/
+.github/
+
+# Python environment
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Python testing
+.pytest_cache/
+.hypothesis/
+
+# MLflow
+mlruns/
+mlflow.db
+
+# Monitoring output
+logs/
+reports/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Local IDE settings
+.vscode/
+.idea/
+
+# DVC cache
+.dvc/cache/
+
+# Temporary files
+*.log
+.DS_Store

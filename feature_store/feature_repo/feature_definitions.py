@@ -1,8 +1,7 @@
 from datetime import timedelta
 
 from feast import Entity, FeatureView, FeatureService, Field, FileSource
-from feast.types import Float32, Int64
-
+from feast.types import Float32, Int64, ValueType
 
 # ============================================================
 # Customer Entity
@@ -11,6 +10,7 @@ from feast.types import Float32, Int64
 customer = Entity(
     name="customer",
     join_keys=["customer_id"],
+    value_type=ValueType.STRING,
     description="Customer entity for churn prediction",
 )
 

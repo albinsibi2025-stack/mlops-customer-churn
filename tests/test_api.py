@@ -2,6 +2,7 @@ import builtins
 import importlib
 import io
 from unittest.mock import patch
+import json
 
 import pandas as pd
 import pytest
@@ -68,15 +69,19 @@ original_open = builtins.open
 
 
 def mocked_open(file, *args, **kwargs):
-    if str(file).endswith("logistic_regression_v3_metadata.json"):
-        return io.StringIO('{"threshold": 0.34}')
+    if str(file).endswith("candidate_v3_metadata.json"):
+        return io.StringIO(
+            json.dumps({
+                "threshold": 0.34,
+                "feature_columns": FEATURE_COLUMNS
+            })
+        )
 
     return original_open(file, *args, **kwargs)
 
-
 with (
     patch("builtins.open", side_effect=mocked_open),
-    patch("joblib.load", return_value=FakeModel()),
+    patch("mlflow.sklearn.load_model", return_value=FakeModel()),
     patch(
         "pandas.read_csv",
         return_value=pd.DataFrame(columns=FEATURE_COLUMNS + ["churn"]),

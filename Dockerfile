@@ -2,23 +2,31 @@ FROM python:3.13-slim
 
 WORKDIR /app
 
-# Install project dependencies
+# Install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application source code
+# Copy application source
 COPY src/ ./src/
 
-# Copy trained model and metadata
-COPY models/ ./models/
+# Copy the selected V3 model and metadata
+COPY models/experimental/mlflow_candidate/ ./models/experimental/mlflow_candidate/
+COPY models/experimental/candidate_v3_metadata.json ./models/experimental/
 
 # Copy training feature columns
-COPY data/experimental/features_v3/train.csv ./data/experimental/features_v3/train.csv
+COPY data/experimental/features_v3/train.csv ./data/experimental/features_v3/
 
-# Copy complete Feast feature repository
-COPY feature_store/feature_repo/ ./feature_store/feature_repo/
+# Copy Feast configuration and definitions
+COPY feature_store/feature_repo/feature_store.yaml ./feature_store/feature_repo/
+COPY feature_store/feature_repo/feature_definitions.py ./feature_store/feature_repo/
+COPY feature_store/feature_repo/__init__.py ./feature_store/feature_repo/
 
-# API port
+# Copy Feast runtime data
+COPY feature_store/feature_repo/data/registry.db ./feature_store/feature_repo/data/
+COPY feature_store/feature_repo/data/online_store.db ./feature_store/feature_repo/data/
+COPY feature_store/feature_repo/data/customer_features_v3.parquet ./feature_store/feature_repo/data/
+
+# Expose API port
 EXPOSE 8000
 
 # Start FastAPI
