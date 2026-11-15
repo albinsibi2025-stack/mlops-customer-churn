@@ -31,65 +31,76 @@ def create_dashboard():
     api_requests = load_log(API_LOG)
     drift = load_log(DRIFT_LOG)
 
-    # ----------------------------------
     # Prediction monitoring
-    # ----------------------------------
-
     total_predictions = len(predictions)
-
     churn_count = 0
     stay_count = 0
     avg_probability = 0.0
 
     if not predictions.empty:
         churn_count = int(
-            (predictions["churn_prediction"] == 1).sum()
+            (pd.to_numeric(
+                predictions["churn_prediction"], errors="coerce"
+            ) == 1).sum()
         )
-
         stay_count = int(
-            (predictions["churn_prediction"] == 0).sum()
+            (pd.to_numeric(
+                predictions["churn_prediction"], errors="coerce"
+            ) == 0).sum()
         )
-
         avg_probability = float(
-            predictions["churn_probability"].mean()
+            pd.to_numeric(
+                predictions["churn_probability"], errors="coerce"
+            ).mean()
         )
 
-    # ----------------------------------
     # API monitoring
-    # ----------------------------------
-
     total_requests = len(api_requests)
     successful_requests = 0
     failed_requests = 0
+    server_errors = 0
+    success_rate = 0.0
+    error_rate = 0.0
     avg_response_time = 0.0
+    p95_response_time = 0.0
+    latest_api_request = "NO DATA"
 
     if not api_requests.empty:
         status_codes = pd.to_numeric(
-            api_requests["status_code"],
-            errors="coerce"
+            api_requests["status_code"], errors="coerce"
         )
+
+        valid_status = status_codes.notna()
 
         successful_requests = int(
             status_codes.between(200, 299).sum()
         )
+        failed_requests = total_requests - successful_requests
 
-        failed_requests = int(
-            (status_codes.isna() | ~status_codes.between(200, 299)).sum()
+        server_errors = int(
+            status_codes.between(500, 599).sum()
         )
+
+        if total_requests:
+            success_rate = successful_requests / total_requests * 100
+            error_rate = failed_requests / total_requests * 100
 
         response_times = pd.to_numeric(
-            api_requests["response_time_ms"],
-            errors="coerce"
-        )
+            api_requests["response_time_ms"], errors="coerce"
+        ).dropna()
 
-        avg_response_time = float(
-            response_times.mean()
-        ) if response_times.notna().any() else 0.0
+        if not response_times.empty:
+            avg_response_time = float(response_times.mean())
+            p95_response_time = float(
+                response_times.quantile(0.95)
+            )
 
-    # ----------------------------------
+        if "timestamp" in api_requests.columns:
+            latest_api_request = str(
+                api_requests["timestamp"].iloc[-1]
+            )
+
     # Data drift monitoring
-    # ----------------------------------
-
     drift_status = "NO DATA"
     drift_share = 0.0
     drifted_features = 0
@@ -103,10 +114,7 @@ def create_dashboard():
         drifted_features = int(latest_drift["drifted_features"])
         total_features = int(latest_drift["total_features"])
 
-    # ----------------------------------
     # Summary tables
-    # ----------------------------------
-
     prediction_summary = pd.DataFrame({
         "Metric": [
             "Total predictions",
@@ -127,13 +135,23 @@ def create_dashboard():
             "Total API requests",
             "Successful requests",
             "Failed requests",
-            "Average response time (ms)"
+            "Success rate (%)",
+            "Error rate (%)",
+            "HTTP 5xx errors",
+            "Average response time (ms)",
+            "P95 response time (ms)",
+            "Latest API request"
         ],
         "Value": [
             total_requests,
             successful_requests,
             failed_requests,
-            f"{avg_response_time:.2f}"
+            f"{success_rate:.2f}",
+            f"{error_rate:.2f}",
+            server_errors,
+            f"{avg_response_time:.2f}",
+            f"{p95_response_time:.2f}",
+            latest_api_request
         ]
     })
 
@@ -152,16 +170,16 @@ def create_dashboard():
         ]
     })
 
-    # ----------------------------------
-    # Generate HTML report
-    # ----------------------------------
+    # Correct drift status colors
+    if drift_status == "ALERT":
+        drift_color = "#dc2626"
+    elif drift_status == "OK":
+        drift_color = "#15803d"
+    else:
+        drift_color = "#64748b"
 
     generated_at = datetime.now(timezone.utc).strftime(
         "%Y-%m-%d %H:%M:%S UTC"
-    )
-
-    drift_color = (
-        "#dc2626" if drift_status == "ALERT" else "#15803d"
     )
 
     report_html = f"""
@@ -179,14 +197,8 @@ def create_dashboard():
                 color: #222;
             }}
 
-            h1 {{
-                color: #1e293b;
-            }}
-
-            h2 {{
-                color: #334155;
-                margin-top: 30px;
-            }}
+            h1 {{ color: #1e293b; }}
+            h2 {{ color: #334155; margin-top: 30px; }}
 
             .card {{
                 background: white;
@@ -213,9 +225,7 @@ def create_dashboard():
                 text-align: left;
             }}
 
-            th {{
-                background: #e2e8f0;
-            }}
+            th {{ background: #e2e8f0; }}
 
             .note {{
                 background: #fff7ed;
@@ -233,7 +243,6 @@ def create_dashboard():
     </head>
 
     <body>
-
         <h1>Customer Churn Monitoring Dashboard</h1>
         <p>Generated: {html.escape(generated_at)}</p>
 
@@ -261,12 +270,13 @@ def create_dashboard():
             The drift comparison uses the held-out V3 test dataset,
             not live production customer data. These results should
             not be interpreted as production performance evidence.
+            API metrics summarize all records currently in the log,
+            including historical test requests.
         </div>
 
         <footer>
             Customer Churn Prediction | MLOps Phase 9 - Monitoring
         </footer>
-
     </body>
     </html>
     """
@@ -280,7 +290,11 @@ def create_dashboard():
     print("Total API requests:", total_requests)
     print("Successful API requests:", successful_requests)
     print("Failed API requests:", failed_requests)
+    print("Success rate:", f"{success_rate:.2f}%")
+    print("Error rate:", f"{error_rate:.2f}%")
+    print("HTTP 5xx errors:", server_errors)
     print("Average response time:", f"{avg_response_time:.2f} ms")
+    print("P95 response time:", f"{p95_response_time:.2f} ms")
     print("Drift status:", drift_status)
     print("\nReport saved to:", REPORT_PATH)
 

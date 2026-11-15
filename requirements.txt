@@ -7,3 +7,4 @@ scikit-learn==1.9.1
 feast==0.66.0
 evidently==0.7.23
 mlflow==3.16.0
+keyring==25.7.0
