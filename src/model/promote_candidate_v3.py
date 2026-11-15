@@ -2,9 +2,10 @@ import argparse
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-
 import mlflow
 from mlflow.tracking import MlflowClient
+from mlflow.exceptions import MlflowException
+
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -69,8 +70,12 @@ def main():
             "champion",
         )
         previous_version = previous.version
-    except Exception:
-        previous_version = None
+
+    except MlflowException as exc:
+        if "RESOURCE_DOES_NOT_EXIST" in str(exc):
+            previous_version = None
+        else:
+            raise
 
     # Record the candidate's promotion details.
     client.set_model_version_tag(
