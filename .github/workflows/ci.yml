@@ -58,3 +58,18 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t customer-churn-api:ci .
+
+      - name: Login to Amazon ECR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          aws ecr get-login-password --region "${{ secrets.AWS_DEFAULT_REGION }}" |
+            docker login --username AWS --password-stdin 387683439404.dkr.ecr.ap-south-1.amazonaws.com
+
+      - name: Push Docker image to Amazon ECR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker tag customer-churn-api:ci 387683439404.dkr.ecr.ap-south-1.amazonaws.com/customer-churn-api:${GITHUB_SHA}
+          docker tag customer-churn-api:ci 387683439404.dkr.ecr.ap-south-1.amazonaws.com/customer-churn-api:latest
+
+          docker push 387683439404.dkr.ecr.ap-south-1.amazonaws.com/customer-churn-api:${GITHUB_SHA}
+          docker push 387683439404.dkr.ecr.ap-south-1.amazonaws.com/customer-churn-api:latest
