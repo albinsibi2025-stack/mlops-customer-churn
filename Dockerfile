@@ -13,8 +13,6 @@ COPY src/ ./src/
 COPY models/experimental/mlflow_candidate/ ./models/experimental/mlflow_candidate/
 COPY models/experimental/candidate_v3_metadata.json ./models/experimental/
 
-# Copy training feature columns
-COPY data/experimental/features_v3/train.csv ./data/experimental/features_v3/
 
 # Copy Feast configuration and definitions
 COPY feature_store/feature_repo/feature_store.yaml ./feature_store/feature_repo/
