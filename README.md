@@ -20,6 +20,12 @@ The project uses Logistic Regression to predict customer churn and integrates to
 
 \## Architecture
 
+The following diagram illustrates the complete end-to-end MLOps architecture implemented in this project.
+
+<p align="center">
+  <img src="src/images/architecture.png" alt="Customer Churn Prediction MLOps Architecture" width="100%">
+</p>
+
 
 
 The project follows a 10-phase MLOps workflow:
@@ -260,25 +266,6 @@ Evaluated the model using:
 
 \- ROC-AUC
 
-
-
-\*\*Held-out test results:\*\*
-
-
-
-| Metric | Score |
-
-|---|---:|
-
-| Accuracy | 0.7347 |
-
-| Precision | 0.5153 |
-
-| Recall | 0.6522 |
-
-| F1-score | 0.5757 |
-
-| ROC-AUC | 0.7892 |
 
 
 
